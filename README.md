@@ -1,144 +1,100 @@
-
-
-**Fine-tuning Mistral-7B for Russian Financial Tasks using QLoRA**
-
-
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR_USERNAME/financial-llm-research/blob/main/Financial_LLM_Complete.ipynb)
+Дообучение Mistral-7B для российских финансовых задач с использованием QLoRA
+![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-red?logo=pytorch)
 ![Transformers](https://img.shields.io/badge/Transformers-4.36+-yellow?logo=huggingface)
-
-
 ---
-
-## 🎯 Project Overview
-
-This project demonstrates **end-to-end fine-tuning of a 7-billion parameter language model** for financial domain tasks using parameter-efficient methods (QLoRA). The model was trained on a free Google Colab GPU in just **~2 hours**.
-
-### Key Achievements
-
-| Metric | Baseline | Fine-tuned | Improvement |
-|--------|----------|------------|-------------|
-| **ROUGE-1** | 0.35 | **0.52** | +48.6% ✨ |
-| **ROUGE-2** | 0.15 | **0.28** | +86.7% ✨ |
-| **ROUGE-L** | 0.30 | **0.47** | +56.7% ✨ |
-
+Обзор проекта
+Этот проект демонстрирует полный цикл дообучения языковой модели с 7 миллиардами параметров для задач финансовой сферы с применением методов эффективного по памяти обучения (QLoRA). Модель была обучена на бесплатном GPU в Google Colab за около 2 часов.
+Основные результаты
+Метрика	Базовая модель	После дообучения	Улучшение
+ROUGE-1	0.35	0.52	+48.6%
+ROUGE-2	0.15	0.28	+86.7%
+ROUGE-L	0.30	0.47	+56.7%
 ---
-
-## 🚀 Quick Start
-
-### Run in Google Colab (Recommended)
-
-1. **Click the "Open in Colab" badge above**
-2. **Runtime → Change runtime type → GPU (T4)**
-3. **Run all cells** (Shift+Enter through each cell)
-4. **Wait ~2 hours** for training to complete
-
-That's it! No installation, no setup required.
-
-### Run Locally
-
+Быстрый старт
+Запуск в Google Colab (рекомендуется)
+Нажмите на кнопку "Open in Colab" выше
+Среда выполнения → Сменить среду выполнения → GPU (T4)
+Запустите все ячейки (Shift+Enter по каждой ячейке)
+Подождите около 2 часов до завершения обучения
+Установка и дополнительная настройка не требуются.
+Локальный запуск
 ```bash
-# Clone repository
+# Клонировать репозиторий
 git clone https://github.com/YOUR_USERNAME/financial-llm-research.git
 cd financial-llm-research
 
-# Install dependencies
+# Установить зависимости
 pip install -r requirements.txt
 
-# Run notebook
+# Запустить ноутбук
 jupyter notebook Financial_LLM_Complete.ipynb
 ```
-
-**Requirements**: NVIDIA GPU with 8GB+ VRAM, CUDA 11.8+
-
+Требования: GPU NVIDIA с 8+ ГБ VRAM, CUDA 11.8+
 ---
-
-## 💻 Tech Stack
-
+Технический стек
 ```
-🔥 PyTorch 2.1+          - Deep learning framework
-🤗 Transformers 4.36+    - Hugging Face library
-🎯 PEFT 0.7+             - Parameter-efficient fine-tuning
-⚡ QLoRA                 - 4-bit quantized training
-🧮 bitsandbytes 0.41+    - Quantization backend
+PyTorch 2.1+          - Фреймворк глубокого обучения
+Transformers 4.36+    - Библиотека Hugging Face
+PEFT 0.7+             - Параметрически эффективное дообучение
+QLoRA                 - 4-битное квантизированное обучение
+bitsandbytes 0.41+    - Бэкенд квантизации
 ```
-
-### Why This Stack?
-
-- **QLoRA**: Enables training 7B models on 8GB GPU (99.5% memory reduction)
-- **Mistral-7B**: State-of-the-art 7B model with excellent Russian support
-- **PEFT**: Only trains 0.5% of parameters, speeds up training 3x
-- **4-bit NF4**: Reduces model size from 14GB to 3.5GB
-
+Почему именно этот стек?
+QLoRA: позволяет обучать модели 7B на GPU с 8 ГБ VRAM (снижение потребления памяти на 99.5%)
+Mistral-7B: современная модель с отличной поддержкой русского языка
+PEFT: обучает лишь 0.5% параметров, ускоряя обучение в 3 раза
+4-bit NF4: уменьшает размер модели с 14 ГБ до 3.5 ГБ
 ---
-
-## 📊 What This Project Does
-
-### 5 Financial Task Categories
-
-#### 1. 📈 Financial Metrics Extraction
+Что делает этот проект
+5 категорий финансовых задач
+1. Извлечение финансовых показателей
 ```
-Input:  "Сбербанк отчитался о прибыли 1.5 трлн руб (+23% г/г), ROE 24.3%"
-Output: Structured extraction of all key metrics
+Вход:  "Сбербанк отчитался о прибыли 1.5 трлн руб (+23% г/г), ROE 24.3%"
+Выход: Структурированное извлечение всех ключевых метрик
 ```
-
-#### 2. 💳 Credit Risk Assessment
+2. Оценка кредитного риска
 ```
-Input:  Borrower parameters (business age, revenue, debt load, etc.)
-Output: Risk level, analysis, recommendations, lending terms
+Вход:  Параметры заёмщика (срок работы, выручка, долговая нагрузка и др.)
+Выход: Уровень риска, анализ, рекомендации, условия кредитования
 ```
-
-#### 3. 🌱 ESG Risk Analysis
+3. Анализ ESG-рисков
 ```
-Input:  Company ESG metrics (emissions, labor disputes, governance)
-Output: E/S/G risk breakdown with mitigation strategies
+Вход:  ESG-показатели компании (выбросы, трудовые споры, корпоративное управление)
+Выход: Разбивка рисков E/S/G со стратегиями их снижения
 ```
-
-#### 4. 📊 Financial Statement Analysis
+4. Анализ финансовой отчётности
 ```
-Input:  Balance sheet data (assets, liabilities, equity)
-Output: Key ratios, financial health assessment, recommendations
+Вход:  Данные баланса (активы, обязательства, капитал)
+Выход: Ключевые коэффициенты, оценка финансового состояния, рекомендации
 ```
-
-#### 5. 📉 Market Trend Analysis
+5. Анализ рыночных тенденций
 ```
-Input:  Macroeconomic indicators (interest rates, inflation, currency)
-Output: Sector impact analysis and market outlook
+Вход:  Макроэкономические показатели (процентные ставки, инфляция, курс валют)
+Выход: Анализ влияния на секторы и прогноз рынка
 ```
-
-
-
-
-
-### Bonus Skills
-- Parameter-efficient fine-tuning (LoRA/QLoRA)
-- 4-bit quantization (NF4)
-- Memory optimization techniques
-- Production-ready code practices
-- Domain expertise in finance
-
+Дополнительные навыки
+Параметрически эффективное дообучение (LoRA/QLoRA)
+4-битная квантизация (NF4)
+Техники оптимизации потребления памяти
+Код, готовый к использованию в производственной среде
+Экспертиза в области финансов
 ---
-
-## 📖 Dataset
-
-### Statistics
-
+Датасет
+Статистика
 ```
-Total Examples:     505
-├── Train:          454 (90%)
-└── Validation:     51 (10%)
+Всего примеров:     505
+├── Обучение:       454 (90%)
+└── Валидация:      51 (10%)
 
-Categories:
-├── Calculations:   500 (99%)  # Synthetic financial calculations
-├── Extraction:     2 (0.4%)   # Metric extraction examples
-├── Credit Risk:    1 (0.2%)   # Risk assessment
-├── ESG:            1 (0.2%)   # ESG analysis
-└── Other:          1 (0.2%)   # Market analysis, etc.
+Категории:
+├── Вычисления:     500 (99%)  # Синтетические финансовые расчёты
+├── Извлечение:     2 (0.4%)   # Примеры извлечения метрик
+├── Кредитный риск: 1 (0.2%)   # Оценка риска
+├── ESG:            1 (0.2%)   # ESG-анализ
+└── Прочее:         1 (0.2%)   # Рыночный анализ и др.
 ```
-
-### Data Format
-
+Формат данных
 ```json
 {
   "instruction": "Рассчитай ROE если прибыль 100 млн, капитал 500 млн",
@@ -146,175 +102,129 @@ Categories:
   "category": "calculation"
 }
 ```
-
 ---
-
-## 🔬 Training Details
-
-### Hardware
+Детали обучения
+Аппаратное обеспечение
 ```
-Platform:  Google Colab (Free Tier)
-GPU:       Tesla T4 (16GB VRAM)
-Used:      ~8GB VRAM (50% utilization)
-Time:      ~2 hours for 3 epochs
+Платформа:    Google Colab (бесплатный тариф)
+GPU:          Tesla T4 (16 ГБ VRAM)
+Использовано: ~8 ГБ VRAM (50% загрузки)
+Время:        ~2 часа на 3 эпохи
 ```
-
-### Configuration
+Конфигурация
 ```python
-Base Model:    mistralai/Mistral-7B-v0.1
-Method:        QLoRA (4-bit NF4 quantization)
-LoRA Rank:     64
-LoRA Alpha:    16
-Batch Size:    1 (effective: 16 with grad accumulation)
-Learning Rate: 2e-4
-Optimizer:     Paged AdamW 8-bit
-Scheduler:     Cosine with 3% warmup
-Epochs:        3
+Базовая модель:  mistralai/Mistral-7B-v0.1
+Метод:           QLoRA (4-битная квантизация NF4)
+LoRA Rank:       64
+LoRA Alpha:      16
+Размер батча:    1 (эффективный: 16 с накоплением градиентов)
+Скорость обуч.:  2e-4
+Оптимизатор:     Paged AdamW 8-bit
+Планировщик:     Косинусный с прогревом 3%
+Эпохи:           3
 ```
-
-### Memory Optimization
-- 4-bit quantization (75% memory reduction)
-- Gradient checkpointing (40% memory reduction)
-- LoRA adapters (99.5% fewer parameters)
-- Mixed precision (BF16)
-- Gradient accumulation
-
+Оптимизация памяти
+4-битная квантизация (снижение потребления памяти на 75%)
+Gradient checkpointing (снижение на 40%)
+LoRA-адаптеры (на 99.5% меньше параметров)
+Смешанная точность (BF16)
+Накопление градиентов
 ---
-
-##Results
-
-### Quantitative Metrics
-
-| Metric | Score | Description |
-|--------|-------|-------------|
-| ROUGE-1 | 0.52 | Unigram overlap |
-| ROUGE-2 | 0.28 | Bigram overlap |
-| ROUGE-L | 0.47 | Longest common subsequence |
-
-### Qualitative Examples
-
-#### Example 1: Financial Calculation
+Результаты
+Количественные метрики
+Метрика	Значение	Описание
+ROUGE-1	0.52	Совпадение по униграммам
+ROUGE-2	0.28	Совпадение по биграммам
+ROUGE-L	0.47	Наибольшая общая подпоследовательность
+Качественные примеры
+Пример 1: Финансовые вычисления
 ```
-Question: Рассчитай ROE если прибыль 150 млн руб, капитал 600 млн руб
+Вопрос: Рассчитай ROE если прибыль 150 млн руб, капитал 600 млн руб
 
-Model Output:
+Ответ модели:
 ROE = (Чистая прибыль / Собственный капитал) × 100%
     = (150 / 600) × 100%
     = 25%
-    
-Это отличный показатель рентабельности капитала, что свидетельствует 
+
+Это отличный показатель рентабельности капитала, что свидетельствует
 о высокой эффективности использования собственных средств компании.
 ```
-
-#### Example 2: Liquidity Analysis
+Пример 2: Анализ ликвидности
 ```
-Question: Текущие активы 500 млн, краткосрочные обязательства 300 млн. 
+Вопрос: Текущие активы 500 млн, краткосрочные обязательства 300 млн.
             Оцени ликвидность.
 
-Model Output:
+Ответ модели:
 Коэффициент текущей ликвидности = 500/300 = 1.67
 
-Нормальная ликвидность, достаточно для покрытия обязательств. 
-Компания может комфортно погашать краткосрочные обязательства 
+Нормальная ликвидность, достаточно для покрытия обязательств.
+Компания может комфортно погашать краткосрочные обязательства
 с запасом в 67%.
 ```
-
 ---
-
-## Use Cases
-
-### For Banking
-- Automated analysis of loan applications
-- Financial report summarization
-- Risk assessment automation
-- Regulatory compliance checking
-
-### For Finance
-- Investment analysis
-- Company valuation
-- Market trend analysis
-- Financial forecasting
-
-### For Education
-- Financial literacy training
-- Calculation verification
-- Concept explanation
-- Practice problem generation
-
+Сценарии применения
+Для банков
+Автоматизированный анализ кредитных заявок
+Резюмирование финансовых отчётов
+Автоматизация оценки рисков
+Проверка соответствия регуляторным требованиям
+Для финансовых компаний
+Инвестиционный анализ
+Оценка стоимости компаний
+Анализ рыночных тенденций
+Финансовое прогнозирование
+Для образования
+Обучение финансовой грамотности
+Проверка расчётов
+Объяснение концепций
+Генерация учебных задач
 ---
-
-## Limitations & Future Work
-
-### Current Limitations
-- Limited to Russian language
-- Training data size (505 examples)
-- No real-time market data integration
-- Calculations are template-based
-
-### Future Improvements
-1. **Expand Dataset**: Collect 5,000+ real financial documents
-2. **RAG Integration**: Add retrieval for current market data
-3. **Multi-modal**: Support charts, tables, PDFs
-4. **Continuous Learning**: Update with latest financial trends
-5. **Evaluation**: Human evaluation by domain experts
-
+Ограничения и планы развития
+Текущие ограничения
+Работает только на русском языке
+Небольшой объём обучающих данных (505 примеров)
+Отсутствует интеграция с данными рынка в реальном времени
+Расчёты основаны на шаблонах
+Планируемые улучшения
+Расширение датасета: сбор 5 000+ реальных финансовых документов
+Интеграция RAG: подключение поиска по актуальным рыночным данным
+Мультимодальность: поддержка графиков, таблиц и PDF
+Непрерывное обучение: обновление на основе актуальных финансовых тенденций
+Оценка: экспертная оценка специалистами в области финансов
 ---
-
-## Why This Project Stands Out
-
-### 1. **Complete Research Cycle**
-Not just code - includes problem formulation, experimentation, analysis, and documentation
-
-### 2. **Production-Ready**
-Clean code, error handling, comprehensive documentation, reproducible results
-
-### 3. **Resource Efficient**
-Achieves strong results on free GPU - demonstrates optimization skills
-
-### 4. **Domain Expertise**
-Shows understanding of financial concepts, not just ML techniques
-
-### 5. **Research Mindset**
-Systematic approach, metric-driven evaluation, clear documentation
-
+Чем этот проект выделяется
+1. Полный исследовательский цикл
+Не просто код — включает постановку задачи, эксперименты, анализ и документацию.
+2. Готовность к продакшену
+Чистый код, обработка ошибок, подробная документация, воспроизводимые результаты.
+3. Эффективное использование ресурсов
+Сильные результаты на бесплатном GPU — демонстрация навыков оптимизации.
+4. Экспертиза в предметной области
+Демонстрирует понимание финансовых концепций, а не только техник машинного обучения.
+5. Исследовательский подход
+Систематический подход, оценка на основе метрик, чёткая документация.
 ---
-
-## 🎓 Learning Resources
-
-### Papers
-- [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)
-- [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314)
-- [Mistral 7B](https://arxiv.org/abs/2310.06825)
-
-### Tutorials
-- [Hugging Face PEFT Documentation](https://huggingface.co/docs/peft)
-- [QLoRA Fine-tuning Guide](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
-
+Учебные материалы
+Статьи
+LoRA: Low-Rank Adaptation of Large Language Models
+QLoRA: Efficient Finetuning of Quantized LLMs
+Mistral 7B
+Руководства
+Документация Hugging Face PEFT
+Руководство по дообучению с QLoRA
 ---
-
-
-## Acknowledgments
-
-- Hugging Face for Transformers and PEFT libraries
-- Tim Dettmers for QLoRA and bitsandbytes
-- Mistral AI for open-source models
-- Google Colab for free GPU access
-
+Благодарности
+Hugging Face — за библиотеки Transformers и PEFT
+Тим Деттмерс — за QLoRA и bitsandbytes
+Mistral AI — за открытые модели
+Google Colab — за бесплатный доступ к GPU
 ---
-
-## If This Helped You
-
-If you found this project useful for your own work or learning:
-- ⭐ Star this repository
-- 🔄 Fork it for your own experiments
-- 📢 Share it with others
-
+Если проект оказался полезным
+Если этот проект помог вам в работе или обучении:
+Поставьте звезду репозиторию
+Сделайте форк для собственных экспериментов
+Поделитесь им с другими
 ---
-
-**Status**: ✅ Production Ready  
-**Created**: February 2026  
-
-
+Статус: Готово к продакшену  
+Создан: февраль 2026
 ---
-
-
